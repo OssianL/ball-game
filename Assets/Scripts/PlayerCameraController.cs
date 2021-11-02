@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerCameraController : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class PlayerCameraController : MonoBehaviour {
     public void Awake() {
         playerCamera = GetComponent<Camera>();
         playerRigidbody = player.GetComponent<Rigidbody>();
+        playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(GameObject.FindGameObjectWithTag("UiCamera").GetComponent<Camera>());
     }
 
     public void LateUpdate() {

@@ -13,10 +13,16 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform playerCamera; 
 
     private Rigidbody ballRigidbody;
+    private Collider ballCollider;
     private MeshRenderer meshRenderer;
+
+    // TODO: private StateMachine powerUpStateMachine;
+
     private int playerNumber;
     private string inputPrefix;
     private Vector3 checkpoint;
+    private Color defaultColor;
+    private bool isFinished;
 
     private float powerUpTimeLeft;
     private string powerUpName;
@@ -24,12 +30,16 @@ public class PlayerController : MonoBehaviour {
     public void Awake() {
         ballRigidbody = GetComponent<Rigidbody>();
         ballRigidbody.maxAngularVelocity = maxAngularVelocity;
+        ballCollider = GetComponent<Collider>();
         meshRenderer = GetComponent<MeshRenderer>();
         checkpoint = Vector3.up;
+        defaultColor = meshRenderer.material.color;
     }
 
     // this is called 50 times a second by Unity, everything related to physics should be done here instead of normal Update()
     public void FixedUpdate() {
+        if(isFinished) return;
+
         HandlePlayerMovement();
         if(Input.GetButtonDown(inputPrefix + "Jump")) HandlePlayerJump();
 
@@ -44,6 +54,7 @@ public class PlayerController : MonoBehaviour {
     public void OnTriggerEnter(Collider other) {
         if(other.tag == "Checkpoint") OnCheckpointEnter(other.transform.position);
         else if(other.tag == "KillVolume") OnKillVolumeEnter();
+        else if(other.tag == "FinishLine") OnFinishLineEnter();
         // add volume based power ups here
     }
 
@@ -57,6 +68,12 @@ public class PlayerController : MonoBehaviour {
         this.playerNumber = playerNumber;
         inputPrefix = "Player" + playerNumber;
         meshRenderer.material = material;
+        ballRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+    }
+
+    // this is called by GameController when countdown is over and round starts
+    public void Release() {
+        ballRigidbody.constraints = RigidbodyConstraints.None;
     }
 
     // call this to apply a power up to the player
@@ -65,6 +82,10 @@ public class PlayerController : MonoBehaviour {
         this.powerUpName = powerUpName;
         powerUpTimeLeft = duration;
         PowerUpStart();
+    }
+
+    public bool IsFinished() {
+        return isFinished;
     }
 
     private void HandlePlayerMovement() {
@@ -112,6 +133,12 @@ public class PlayerController : MonoBehaviour {
         Respawn();
     }
 
+    private void OnFinishLineEnter() {
+        isFinished = true;
+        Destroy(ballRigidbody);
+        Destroy(ballCollider);
+    }
+
     private void Respawn() {
         transform.position = checkpoint;
         ballRigidbody.velocity = Vector3.zero;
@@ -119,8 +146,14 @@ public class PlayerController : MonoBehaviour {
 
     // this is called when a new power up starts
     private void PowerUpStart() {
-        if(powerUpName == "TestPowerUp") meshRenderer.material.color = Color.blue;
-        // else if(powerUpName == "SomeOtherPowerUp") DoStuff();
+        if(powerUpName == "SpeedUp") {
+            meshRenderer.material.color = Color.blue;
+            movementForce *= 2f;
+        }
+        else if(powerUpName == "SpeedDown") {
+            meshRenderer.material.color = Color.red;
+            movementForce /= 2f;
+        }
     }
 
     // this is called every FixedUpdate when a power up is active
@@ -130,6 +163,12 @@ public class PlayerController : MonoBehaviour {
 
     // this is called when a power up ends
     private void PowerUpEnd() {
-        if(powerUpName == "TestPowerUp") meshRenderer.material.color = Color.red;
+        if(powerUpName == "SpeedUp") {
+            movementForce /= 2f;
+        }
+        else if(powerUpName == "SpeedDown") {
+            movementForce *= 2f;
+        }
+        meshRenderer.material.color = defaultColor;
     }
 }
