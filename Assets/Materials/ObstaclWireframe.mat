@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4502064448289330628
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 4
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wireframe
+  m_Name: ObstaclWireframe
   m_Shader: {fileID: -6465566751694194690, guid: f4d62a40459e9feb884cd7032d07e073, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 2
@@ -93,9 +80,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1e5444e561414f09be5f7632658e414a: 0.1
-    - Vector1_8f0b5c2b63824bc6aee2f21b8eb0345b: 0
-    - Vector1_903dff65280a419aaff448122ed0da18: 0.2
+    - Vector1_1e5444e561414f09be5f7632658e414a: 0.05
+    - Vector1_8f0b5c2b63824bc6aee2f21b8eb0345b: 10
+    - Vector1_903dff65280a419aaff448122ed0da18: 0.4
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

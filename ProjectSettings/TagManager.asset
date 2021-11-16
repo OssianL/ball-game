@@ -8,9 +8,9 @@ TagManager:
   - KillVolume
   - Checkpoint
   - LiveVolume
-  - BoostVolume
   - UiCamera
   - FinishLine
+  - SpeedBoost
   layers:
   - Default
   - TransparentFX

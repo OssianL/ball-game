@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4502064448289330628
+--- !u!114 &-496244913269423486
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,10 +20,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wireframe
-  m_Shader: {fileID: -6465566751694194690, guid: f4d62a40459e9feb884cd7032d07e073, type: 3}
+  m_Name: HalfPipe
+  m_Shader: {fileID: -6465566751694194690, guid: 4660f473474ad1d61a4278e6e0db7db1, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -33,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 59a246d70b0e305fe89d77a16318cf8a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 59a246d70b0e305fe89d77a16318cf8a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -76,10 +76,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Texture2DAsset_2ced998a48c541689165dcc96a58a9a1_Out_0:
-        m_Texture: {fileID: 2800000, guid: 59a246d70b0e305fe89d77a16318cf8a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -93,9 +89,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1e5444e561414f09be5f7632658e414a: 0.1
-    - Vector1_8f0b5c2b63824bc6aee2f21b8eb0345b: 0
-    - Vector1_903dff65280a419aaff448122ed0da18: 0.2
+    - Vector1_3caef654ea064299b4c3fd4bfc225710: 18.05
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -107,13 +101,12 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
     - _Metallic: 0
-    - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.02
+    - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -121,12 +114,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_1405b6bccd754432934dc23e58cd0f2e: {r: 0, g: 0, b: 0, a: 0}
-    - Color_483e5b1aa3d544bfb195114b53b2448b: {r: 0.28176475, g: 0.7176471, b: 0.2588235, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

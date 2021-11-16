@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour {
         ballCollider = GetComponent<Collider>();
         meshRenderer = GetComponent<MeshRenderer>();
         checkpoint = Vector3.up;
-        defaultColor = meshRenderer.material.color;
+        // defaultColor = meshRenderer.material.color;
     }
 
     // this is called 50 times a second by Unity, everything related to physics should be done here instead of normal Update()
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour {
         if(other.tag == "Checkpoint") OnCheckpointEnter(other.transform.position);
         else if(other.tag == "KillVolume") OnKillVolumeEnter();
         else if(other.tag == "FinishLine") OnFinishLineEnter();
+        else if(other.tag == "SpeedBoost") OnSpeedBoostEnter(other);
         // add volume based power ups here
     }
 
@@ -137,6 +138,11 @@ public class PlayerController : MonoBehaviour {
         isFinished = true;
         Destroy(ballRigidbody);
         Destroy(ballCollider);
+    }
+
+    private void OnSpeedBoostEnter(Collider other) {
+        Vector3 direction = other.transform.forward;
+        ballRigidbody.AddForce(direction * 40f, ForceMode.Impulse);
     }
 
     private void Respawn() {
