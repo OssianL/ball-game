@@ -11,6 +11,8 @@ TagManager:
   - UiCamera
   - FinishLine
   - SpeedBoost
+  - DestructibleObstacle
+  - AudioManager
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - MainMenu
   - 
   - 
   - 

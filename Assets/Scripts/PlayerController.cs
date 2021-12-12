@@ -11,12 +11,17 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float jumpMaxDistanceToGround;
     [SerializeField] private float jumpImpulseForce;
     [SerializeField] private Transform playerCamera; 
+    [SerializeField] private Transform angryBallParticles; 
+    [SerializeField] private TrailRenderer trail;
+    [SerializeField] private ParticleSystem angryParticles;
+    [SerializeField] private Transform[] endScoreTexts;
 
+    private GameController gameController;
+    private AudioManager audioManager;
+    private float currentMovementForce;
     private Rigidbody ballRigidbody;
     private Collider ballCollider;
     private MeshRenderer meshRenderer;
-
-    // TODO: private StateMachine powerUpStateMachine;
 
     private int playerNumber;
     private string inputPrefix;
@@ -28,6 +33,9 @@ public class PlayerController : MonoBehaviour {
     private string powerUpName;
 
     public void Awake() {
+        gameController = GameObject.FindObjectOfType<GameController>();
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+        currentMovementForce = movementForce;
         ballRigidbody = GetComponent<Rigidbody>();
         ballRigidbody.maxAngularVelocity = maxAngularVelocity;
         ballCollider = GetComponent<Collider>();
@@ -56,6 +64,7 @@ public class PlayerController : MonoBehaviour {
         else if(other.tag == "KillVolume") OnKillVolumeEnter();
         else if(other.tag == "FinishLine") OnFinishLineEnter();
         else if(other.tag == "SpeedBoost") OnSpeedBoostEnter(other);
+        else if(other.tag == "DestructibleObstacle") OnDestructibleObstacleEnter(other);
         // add volume based power ups here
     }
 
@@ -65,11 +74,16 @@ public class PlayerController : MonoBehaviour {
     }
 
     // this is called by GameController when spawning a player
-    public void InitPlayer(int playerNumber, Material material) {
+    public void InitPlayer(int playerNumber, Color color) {
         this.playerNumber = playerNumber;
         inputPrefix = "Player" + playerNumber;
-        meshRenderer.material = material;
+        meshRenderer.material.SetColor("Color_color", color);
         ballRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+        trail.startColor = color;
+        trail.endColor = color;
+        Color transparentColor = new Color(color.r, color.g, color.b, 0f);
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime = angryParticles.colorOverLifetime;
+        colorOverLifetime.color = new ParticleSystem.MinMaxGradient(color, transparentColor);
     }
 
     // this is called by GameController when countdown is over and round starts
@@ -103,7 +117,7 @@ public class PlayerController : MonoBehaviour {
         inputDirection.Normalize(); // normalized so the length is 1
 
         // calculate wanted torques by rotating inputDirection by forwardRotation and then multiplying with movementForce
-        Vector3 torque = forwardRotation * inputDirection * movementForce;
+        Vector3 torque = forwardRotation * inputDirection * currentMovementForce;
         ballRigidbody.AddTorque(torque); // apply torque to rigidbody
     }
 
@@ -135,14 +149,30 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnFinishLineEnter() {
+        if(isFinished) return;
         isFinished = true;
         Destroy(ballRigidbody);
         Destroy(ballCollider);
+        int score = gameController.OnPlayerFinish();
+        endScoreTexts[score-1].gameObject.SetActive(true);
     }
 
     private void OnSpeedBoostEnter(Collider other) {
         Vector3 direction = other.transform.forward;
         ballRigidbody.AddForce(direction * 40f, ForceMode.Impulse);
+        audioManager.PlaySound("SpeedBoost");
+    }
+
+    private void OnDestructibleObstacleEnter(Collider other) {
+        if(powerUpName != "AngryBall") {
+            ballRigidbody.velocity *= 0.1f;
+            audioManager.PlaySound("ObstacleHit1");
+        }
+        else {
+            
+        }
+        Destroy(other.gameObject);
+
     }
 
     private void Respawn() {
@@ -152,29 +182,25 @@ public class PlayerController : MonoBehaviour {
 
     // this is called when a new power up starts
     private void PowerUpStart() {
-        if(powerUpName == "SpeedUp") {
-            meshRenderer.material.color = Color.blue;
-            movementForce *= 2f;
-        }
-        else if(powerUpName == "SpeedDown") {
-            meshRenderer.material.color = Color.red;
-            movementForce /= 2f;
+        if(powerUpName == "AngryBall") {
+            angryBallParticles.gameObject.SetActive(true);
+            currentMovementForce = movementForce * 2;
         }
     }
 
     // this is called every FixedUpdate when a power up is active
     private void PowerUpUpdate() {
+        if(powerUpName == "AngryBall") {
 
+        }
     }
 
     // this is called when a power up ends
     private void PowerUpEnd() {
-        if(powerUpName == "SpeedUp") {
-            movementForce /= 2f;
+        if(powerUpName == "AngryBall") {
+            angryBallParticles.gameObject.SetActive(false);
+            currentMovementForce = movementForce;
         }
-        else if(powerUpName == "SpeedDown") {
-            movementForce *= 2f;
-        }
-        meshRenderer.material.color = defaultColor;
+        powerUpName = null;
     }
 }

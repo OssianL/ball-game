@@ -4,54 +4,95 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+    [SerializeField] private GameObject mainMenu;
     [SerializeField] private int playerCount;
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private Material[] playerMaterials;
+    [SerializeField] private GameObject levelPrefab;
+    [SerializeField] private Color[] playerColors;
+    [SerializeField] private float gameOverDelay;
 
     private Animator animator;
 
     private StateMachine stateMachine;
     private GameObject[] players;
     private PlayerController[] playerControllers;
+    private GameObject levelInstance;
+    private float gameOverStartTime;
+
+    private int finishedPlayersCounter;
 
     public void Awake() {
         stateMachine = new StateMachine();
-        stateMachine.Add("warmup", WarmupStart, null, null);
+        stateMachine.Add("mainMenu", MainMenuStart, null, MainMenuEnd);
+        stateMachine.Add("loadLevel", LoadLevelStart, null, null);
+        stateMachine.Add("spawnPlayers", SpawnPlayersStart, null, null);
         stateMachine.Add("countdown", CountdownStart, null, null);
         stateMachine.Add("main", MainStart, MainUpdate, MainEnd);
-        stateMachine.Add("gameOver", GameOverStart, GameOverUpdate, null);
-        stateMachine.ChangeState("warmup");
+        stateMachine.Add("gameOver", GameOverStart, GameOverUpdate, GameOverEnd);
+        stateMachine.ChangeState("mainMenu");
 
         animator = GetComponent<Animator>();
     }
 
     public void Start() {
-        SpawnPlayers();
+        SetPlayerCount(playerCount);
     }
 
     public void Update() {
         stateMachine.Update();
     }
 
-    private void SpawnPlayers() {
+    public void SetPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+    }
+    
+    public int GetPlayerCount() {
+        return playerCount;
+    }
+
+    public void StartNewGame() {
+        stateMachine.ChangeState("loadLevel");
+    }
+
+    public int OnPlayerFinish() {
+        finishedPlayersCounter++;
+        return finishedPlayersCounter;
+    }
+
+    private void InstantiateLevel() {
+        levelInstance = Instantiate(levelPrefab, Vector3.zero, Quaternion.identity);
+    }
+
+    private void MainMenuStart() {
+        mainMenu.SetActive(true);
+    }
+
+    private void MainMenuEnd() {
+        mainMenu.SetActive(false);
+    }
+
+    private void LoadLevelStart() {
+        InstantiateLevel();
+        stateMachine.ChangeStateNextFrame("spawnPlayers");
+    }
+
+    private void SpawnPlayersStart() {
         players = new GameObject[playerCount];
         playerControllers = new PlayerController[playerCount];
+        finishedPlayersCounter = 0;
         // player spawns are defined with empty GameObjects that have the tag "PlayerSpawner"
         GameObject[] playerSpawners = GameObject.FindGameObjectsWithTag("PlayerSpawner");
         if(playerSpawners.Length < playerCount) Debug.Log("Not enough player spawners!");
         for(int i = 0; i < playerCount; i++) {
             Vector3 playerSpawnPosition = playerSpawners[i].transform.position;
             GameObject playerInstance = Instantiate(playerPrefab, playerSpawnPosition, Quaternion.identity);
+            players[i] = playerInstance;
             PlayerCameraController playerCameraController = playerInstance.GetComponentInChildren<PlayerCameraController>();
             playerCameraController.InitPlayerViewport(i+1, playerCount);
             PlayerController playerController = playerInstance.GetComponentInChildren<PlayerController>();
             playerControllers[i] = playerController;
-            playerController.InitPlayer(i+1, playerMaterials[i]);
+            playerController.InitPlayer(i+1, playerColors[i]);
         }
-    }
-
-    private void WarmupStart() {
-        // TODO: play camera animation, one camera
         stateMachine.ChangeStateNextFrame("countdown");
     }
 
@@ -75,7 +116,7 @@ public class GameController : MonoBehaviour {
     }
 
     private void MainUpdate() {
-        if(AllPlayersFinished()) stateMachine.ChangeState("gameOver");
+        if(GameOverTrigger()) stateMachine.ChangeState("gameOver");
     }
 
     private void MainEnd() {
@@ -83,19 +124,24 @@ public class GameController : MonoBehaviour {
     }
 
     private void GameOverStart() {
-        // TODO: score board?
-        Debug.Log("game over mään");
+        gameOverStartTime = Time.time;
     }
 
     private void GameOverUpdate() {
-        // TODO: restart game
+        if(Time.time > (gameOverStartTime + gameOverDelay)) stateMachine.ChangeState("mainMenu");
+    }
+    
+    private void GameOverEnd() {
+        Destroy(levelInstance);
+        playerControllers = null;
+        foreach(GameObject player in players) {
+            Destroy(player);
+        }
+        players = null;
     }
 
-    private bool AllPlayersFinished() {
-        foreach(PlayerController player in playerControllers) {
-            if(!player.IsFinished()) return false;
-        }
-        return true;
+    private bool GameOverTrigger() {
+        return finishedPlayersCounter >= playerCount;
     }
 
 }

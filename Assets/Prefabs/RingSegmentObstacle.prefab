@@ -113,6 +113,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ringSegment (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_TagString
+      value: DestructibleObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
 --- !u!4 &1253369087719316088 stripped
@@ -178,6 +190,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
       propertyPath: m_Name
       value: ringSegment
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_TagString
+      value: DestructibleObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
@@ -245,6 +269,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ringSegment (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_TagString
+      value: DestructibleObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
 --- !u!4 &1253369086736270382 stripped
@@ -310,6 +346,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
       propertyPath: m_Name
       value: ringSegment (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_TagString
+      value: DestructibleObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc0d855a0fe7198ea2350d2eabcc13b, type: 3}
