@@ -66,7 +66,7 @@ public class MainMenuController : MonoBehaviour {
     }
 
     private void OnHoverButton() {
-        audioManager.PlaySound("Blib2");
+        audioManager.PlaySoundEffect("blib2");
     }
 
     private void UpdateButtonStates(int playerCount) {
@@ -87,11 +87,11 @@ public class MainMenuController : MonoBehaviour {
     private void SetPlayerCount(int playerCount, bool playSound = true) {
         gameController.SetPlayerCount(playerCount);
         UpdateButtonStates(playerCount);
-        if(playSound) audioManager.PlaySound("Blib3");
+        if(playSound) audioManager.PlaySoundEffect("blib3");
     }
 
     private void StartGame() {
         gameController.StartNewGame();
-        audioManager.PlaySound("Wobbles1");
+        audioManager.PlaySoundEffect("wobbles1");
     }
 }

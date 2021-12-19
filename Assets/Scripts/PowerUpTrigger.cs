@@ -11,6 +11,8 @@ public class PowerUpTrigger : MonoBehaviour {
         if(other.tag == "Player") {
             PlayerController playerController = other.transform.GetComponent<PlayerController>();
             playerController.AddPowerUp(powerUpName, powerUpDuration);
+            Destroy(gameObject);
+            GameObject.FindObjectOfType<AudioManager>().PlaySoundEffect(powerUpName);
         }
     }
 

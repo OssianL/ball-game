@@ -159,18 +159,19 @@ public class PlayerController : MonoBehaviour {
 
     private void OnSpeedBoostEnter(Collider other) {
         Vector3 direction = other.transform.forward;
-        ballRigidbody.AddForce(direction * 40f, ForceMode.Impulse);
-        audioManager.PlaySound("SpeedBoost");
+        ballRigidbody.AddForce(direction * 15f, ForceMode.Impulse);
+        audioManager.PlaySoundEffect("speedBoost");
     }
 
     private void OnDestructibleObstacleEnter(Collider other) {
         if(powerUpName != "AngryBall") {
             ballRigidbody.velocity *= 0.1f;
-            audioManager.PlaySound("ObstacleHit1");
+            audioManager.PlaySoundEffect("obstacleHit1");
         }
         else {
             
         }
+        audioManager.PlaySoundEffect("shatter");
         Destroy(other.gameObject);
 
     }

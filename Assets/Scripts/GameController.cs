@@ -11,17 +11,19 @@ public class GameController : MonoBehaviour {
     [SerializeField] private Color[] playerColors;
     [SerializeField] private float gameOverDelay;
 
+    private AudioManager audioManager;
     private Animator animator;
-
     private StateMachine stateMachine;
     private GameObject[] players;
     private PlayerController[] playerControllers;
     private GameObject levelInstance;
     private float gameOverStartTime;
-
     private int finishedPlayersCounter;
 
     public void Awake() {
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+        animator = GetComponent<Animator>();
+
         stateMachine = new StateMachine();
         stateMachine.Add("mainMenu", MainMenuStart, null, MainMenuEnd);
         stateMachine.Add("loadLevel", LoadLevelStart, null, null);
@@ -30,8 +32,6 @@ public class GameController : MonoBehaviour {
         stateMachine.Add("main", MainStart, MainUpdate, MainEnd);
         stateMachine.Add("gameOver", GameOverStart, GameOverUpdate, GameOverEnd);
         stateMachine.ChangeState("mainMenu");
-
-        animator = GetComponent<Animator>();
     }
 
     public void Start() {
@@ -65,10 +65,12 @@ public class GameController : MonoBehaviour {
 
     private void MainMenuStart() {
         mainMenu.SetActive(true);
+        audioManager.StartMusic("menu");
     }
 
     private void MainMenuEnd() {
         mainMenu.SetActive(false);
+        audioManager.StopMusic();
     }
 
     private void LoadLevelStart() {
@@ -102,17 +104,26 @@ public class GameController : MonoBehaviour {
     }
 
     // animation event called by animator
+    private void OnCountdown321() {
+        audioManager.PlaySoundEffect("countdown321");
+    }
+
+    // animation event called by animator
+    private void OnCountdownGo() {
+        audioManager.PlaySoundEffect("countdownGo");
+    }
+
+    // animation event called by animator
     private void OnCountdownAnimationEnd() {
-        Debug.Log("count down animation end");
         stateMachine.ChangeState("main");
     }
 
     private void MainStart() {
         // TODO: release players
         foreach(PlayerController playerController in playerControllers) {
-            Debug.Log("release");
             playerController.Release();
         }
+        audioManager.StartMusic("game");
     }
 
     private void MainUpdate() {
@@ -125,6 +136,7 @@ public class GameController : MonoBehaviour {
 
     private void GameOverStart() {
         gameOverStartTime = Time.time;
+        audioManager.StartMusic("end", false);
     }
 
     private void GameOverUpdate() {
